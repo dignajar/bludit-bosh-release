@@ -1,0 +1,29 @@
+---
+packages:
+- name: php
+  version: f0c62482e85a0608312c62adc7ba59c79164fe99
+  fingerprint: f0c62482e85a0608312c62adc7ba59c79164fe99
+  sha1: 28ef6a24b8fd61f638b9b59a531444181435ad39
+  dependencies:
+  - nginx
+- name: bludit
+  version: 6307b6e077ee37737043cec09d767b63c188a81e
+  fingerprint: 6307b6e077ee37737043cec09d767b63c188a81e
+  sha1: e9523b303f8df4f8f1d7ca675d443f9114e17d64
+  dependencies:
+  - nginx
+  - php
+- name: nginx
+  version: 42ae53ec897b8daf32e35f0429638e2c79cb0467
+  fingerprint: 42ae53ec897b8daf32e35f0429638e2c79cb0467
+  sha1: 7dd55d32b9289baac45351a177d58be438e4a14c
+  dependencies: []
+jobs:
+- name: bludit
+  version: a590d9bba9d7ed731d8557f21e64096618e3cc1e
+  fingerprint: a590d9bba9d7ed731d8557f21e64096618e3cc1e
+  sha1: bd51ec3951404bdeb92de80ab6a12ac4a5346e17
+commit_hash: dba215e2
+uncommitted_changes: true
+name: bludit
+version: 0+dev.1

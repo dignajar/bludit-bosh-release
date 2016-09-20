@@ -1,5 +1,5 @@
 ---
-final_name: bludit-release
+final_name: bludit
 blobstore:
   provider: local
   options:
