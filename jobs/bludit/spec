@@ -1,0 +1,13 @@
+---
+name: bludit
+
+templates:
+  bludit_ctl.erb:   bin/bludit_ctl
+  nginx.conf.erb:  	config/nginx.conf
+  php-fpm.conf.erb: php/php-fpm.conf
+  www.conf.erb:  	php/php-fpm.d/www.conf
+
+packages:
+- php
+- nginx
+- bludit

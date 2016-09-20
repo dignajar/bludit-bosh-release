@@ -1,0 +1,17 @@
+# abort script on any command that exits with a non zero value
+set -e -x
+
+echo "Extracting PHP..."
+tar xzf php/php-7.0.11.tar.gz
+
+echo "Building PHP..."
+cd php-7.0.11
+(
+	./configure \
+	--prefix=${BOSH_INSTALL_TARGET} \
+	--enable-fpm \
+	--enable-mbstring
+
+	make
+	make install
+)

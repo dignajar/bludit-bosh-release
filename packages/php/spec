@@ -1,0 +1,9 @@
+---
+name: php
+
+dependencies:
+- nginx
+
+files:
+- php/php-7.0.11.tar.gz
+

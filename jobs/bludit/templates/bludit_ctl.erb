@@ -1,0 +1,43 @@
+#!/bin/bash -e
+
+LOG_DIR=/var/vcap/sys/log/bludit
+
+PHP_PIDFILE=/var/vcap/sys/run/bludit/php-fpm.pid
+PHP_BIN=/var/vcap/packages/php/sbin/php-fpm
+PHP_FPM_CONFIG=/var/vcap/jobs/bludit/php/php-fpm.conf
+
+NGINX_PIDFILE=/var/vcap/sys/run/bludit/nginx.pid
+NGINX_CONFIG=/var/vcap/jobs/bludit/config/nginx.conf
+NGINX_BIN=/var/vcap/packages/nginx/sbin/nginx
+
+case $1 in
+
+	start)
+		# Log directory
+		mkdir -p $LOG_DIR
+		chown -R vcap:vcap $LOG_DIR
+
+		# Set correct permissions for Bludit
+		chown -R vcap:vcap /var/vcap/packages/bludit/*
+
+		# Execute PHP-FPM as vcap user
+		$PHP_BIN --fpm-config $PHP_FPM_CONFIG --pid $PHP_PIDFILE >>$LOG_DIR/php-fpm.stdout.log 2>>$LOG_DIR/php-fpm.stderr.log
+		
+		# Execute NGINX as vcap user
+		$NGINX_BIN -c $NGINX_CONFIG -g "pid $NGINX_PIDFILE;" >>$LOG_DIR/nginx.stdout.log 2>>$LOG_DIR/nginx.stderr.log
+		
+		;;
+	stop)
+		kill $(cat $NGINX_PIDFILE)
+		kill $(cat $PHP_PIDFILE)
+
+		rm $PHP_PIDFILE
+		rm $NGINX_PIDFILE
+		
+		;;
+	*)
+		echo "Usage: bludit_ctl {start|stop}"
+	;;
+esac
+
+exit 0

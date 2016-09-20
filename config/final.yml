@@ -1,0 +1,6 @@
+---
+final_name: bludit-release
+blobstore:
+  provider: local
+  options:
+    blobstore_path: /tmp/bosh-blobstore

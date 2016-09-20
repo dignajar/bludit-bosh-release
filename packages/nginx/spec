@@ -1,0 +1,9 @@
+---
+name: nginx
+
+files:
+- nginx/pcre-8.39.tar.gz
+- nginx/headers-more-nginx-module-0.31.tar.gz
+- nginx/zlib-1.2.8.tar.gz
+- nginx/nginx-1.11.4.tar.gz
+

@@ -1,0 +1,5 @@
+check process bludit
+  with pidfile /var/vcap/sys/run/bludit/nginx.pid
+  start program "/var/vcap/jobs/bludit/bin/bludit_ctl start"
+  stop program "/var/vcap/jobs/bludit/bin/bludit_ctl stop"
+  group vcap

@@ -1,0 +1,9 @@
+---
+name: bludit
+
+dependencies:
+- nginx
+- php
+
+files:
+- bludit/bludit-v1.4a.tar.gz

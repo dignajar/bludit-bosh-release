@@ -1,0 +1,14 @@
+# abort script on any command that exits with a non zero value
+set -e -x
+
+echo "Extracting Bludit files..."
+tar xzf bludit/bludit-v1.4a.tar.gz -C ${BOSH_INSTALL_TARGET}
+
+echo "Moving Bludit files.."
+mv ${BOSH_INSTALL_TARGET}/bludit-1.4a/* ${BOSH_INSTALL_TARGET}/
+
+echo "Cleaning Bludit files.."
+rm -rf ${BOSH_INSTALL_TARGET}/bludit-1.4a
+
+mkdir ${BOSH_INSTALL_TARGET}/bl-content
+touch ${BOSH_INSTALL_TARGET}/.htaccess
