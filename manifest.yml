@@ -1,6 +1,6 @@
 ---
 name: bludit
-director_uuid: fb70f16a-4d6f-41f8-bc2e-0181a03dff18
+director_uuid: fb70f16a-4d6f-41f8-bc2e-0181a03dff18 # CHANGE ME!
 
 releases:
 - name: bludit
@@ -9,9 +9,8 @@ releases:
 networks:
 - name: default
   subnets:
-  - range: 10.120.0.0/28
-    reserved: [10.120.0.1]
-    static: [10.120.0.2]
+  - range: 10.0.0.0/30
+    reserved: [10.0.0.1]
     cloud_properties:
       name: random
 
