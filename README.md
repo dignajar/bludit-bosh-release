@@ -6,26 +6,26 @@ This is a release for [BOSH](http://bosh.io/) that deploys [Bludit](https://blud
 
 In this tutorial, I have Bosh-lite working on my computer, and my BOSH director has the IP 192.168.50.4.
 
-### Clone this repository
+### 1. Clone this repository
 
 ```
 $ git clone git@github.com:dignajar/bludit-bosh-release.git
 $ cd bludit-bosh-release
 ```
 
-### Build the release
+### 2. Build the release
 
 ```
 $ bosh create release --force
 ```
 
-### Upload the release to BOSH director
+### 3. Upload the release to BOSH director
 
 ```
 $ bosh upload release
 ```
 
-You can check if the release is uploaded.
+Check if the release is uploaded.
 
 ```
 $ bosh releases
@@ -38,9 +38,23 @@ $ bosh releases
 ```
 
 
-### Set deployment manifest
+### 4. Deployment manifest
 
-Get the `uuid` of the Bosh director.
+The file `manifest.yml` has a lot of properties about the infrastructure.
+
+This manifest uses the stemcell `bosh-warden-boshlite-ubuntu-trusty-go_agent`, check if you have this stemcell on your BOSH.
+
+```
+$ bosh stemcells
+
++---------------------------------------------+---------------+---------+--------------------------------------+
+| Name                                        | OS            | Version | CID                                  |
++---------------------------------------------+---------------+---------+--------------------------------------+
+| bosh-warden-boshlite-ubuntu-trusty-go_agent | ubuntu-trusty | 3262.2* | 68ab61b0-090a-42bf-635a-c146fa3434a1 |
++---------------------------------------------+---------------+---------+--------------------------------------+
+```
+
+Get the `uuid` of the BOSH director.
 
 ```
 $ bosh status --uuid
@@ -64,7 +78,7 @@ Deployment set to '.../bludit-bosh-release/manifest.yml'
 $ bosh deploy
 ```
 
-check if the VM is up and running.
+Check if the VM is up and running.
 
 ```
 $ bosh vms
@@ -84,4 +98,11 @@ $ sudo ip route add 10.0.0.0/30 via 192.168.50.4
 
 ### Install Bludit
 
-Go with a browser to the URL `http://10.0.0.2` and finish the installation.
+Go with your browser to the URL `http://10.0.0.2` and finish the installation.
+
+## Sources
+
+- https://bosh.io/docs
+- https://github.com/mariash/learn-bosh-release
+- https://github.com/cloudfoundry/bosh-sample-release
+- https://github.com/eljuanchosf/my-first-bosh-release
