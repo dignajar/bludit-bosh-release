@@ -1,6 +1,6 @@
 # Bludit: Bosh release
 
-This is a release for [BOSH](http://bosh.io/) that deploys [Bludit](https://bludit.com), over Nginx and PHP-FPM.
+This is a release for [BOSH](http://bosh.io/) that deploys [Bludit](https://bludit.com), with Nginx and PHP-FPM.
 
 ## How to deploy this release
 
