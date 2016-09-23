@@ -1,0 +1,53 @@
+---
+name: bludit
+director_uuid: 88888888a-427f-8e88-aaaaaaaaaaa # CHANGE IT!
+
+releases:
+- name: bludit
+  version: latest
+
+networks:
+- name: private
+  type: manual
+  subnets:
+  - range: 172.16.0.0/24 # CHANGE IT!
+    gateway: 172.16.0.1 # CHANGE IT!
+    reserved: [172.16.0.1-172.16.0.10] # AWS reserved IP finished in .1, .2, .3.
+    cloud_properties:
+      subnet: subnet-xxxxxxxx # CHANGE IT!
+      security_groups: [diego-security-group] # CHANGE IT!
+
+resource_pools:
+- name: infrastructure
+  size: 4
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+  network: private
+  cloud_properties:
+    instance_type: m3.medium
+    availability_zone: us-east-1b # CHANGE IT!
+
+compilation:
+  workers: 1
+  network: private
+  cloud_properties:
+    instance_type: m3.xlarge
+    availability_zone: us-east-1b # CHANGE IT!
+
+update:
+  canaries: 1
+  canary_watch_time: 30000
+  update_watch_time: 30000
+  max_in_flight: 1
+  max_errors: 1
+
+jobs:
+  - name: bludit
+    templates:
+    - name: bludit
+    instances: 1
+    resource_pool: infrastructure
+    networks:
+    - name: private
+
