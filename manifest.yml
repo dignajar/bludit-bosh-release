@@ -32,7 +32,7 @@ resource_pools:
     availability_zone: sa-east-1a # AZ - CHANGE IT!
 
 compilation:
-  workers: 5
+  workers: 2
   network: private
   cloud_properties:
     instance_type: m3.xlarge
@@ -42,7 +42,7 @@ update:
   canaries: 1
   canary_watch_time: 30000
   update_watch_time: 30000
-  max_in_flight: 1
+  max_in_flight: 2
   max_errors: 1
 
 jobs:
