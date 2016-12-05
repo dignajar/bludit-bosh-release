@@ -1,44 +1,59 @@
 ---
 name: bludit
-director_uuid: fb70f16a-4d6f-41f8-bc2e-0181a03dff18 # CHANGE ME!
+director_uuid: 5a49a256-8569-4e9c-b83f-24bf6a4db843 # CHANGE IT!
 
 releases:
 - name: bludit
   version: latest
 
 networks:
-- name: default
+- name: private
+  type: manual
   subnets:
-  - range: 10.0.0.0/30
-    reserved: [10.0.0.1]
+  - range: 10.100.10.0/24 # CHANGE IT!
+    gateway: 10.100.10.1 # CHANGE IT!
+    dns: [10.100.10.2] # CHANGE IT!
+    reserved: [10.100.10.1-10.100.10.3, 10.100.10.6] # AWS reserved IP finished in .1, .2, .3., Bosh director .6
+    static: 10.100.10.100-10.100.10.150
     cloud_properties:
-      name: random
+      subnet: xxxxxxxxxxxxxx # CHANGE IT!
+      security_groups: [xxxxxxxxxxxxxx] # CHANGE IT!
+- name: public
+  type: vip
 
 resource_pools:
-- name: default
+- name: infrastructure
   stemcell:
-    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
     version: latest
-  network: default
-  cloud_properties: {}
+  network: private
+  cloud_properties:
+    instance_type: t2.micro
+    availability_zone: sa-east-1a # CHANGE IT!
 
 compilation:
-  workers: 2
-  network: default
-  cloud_properties: {}
+  workers: 1
+  network: private
+  cloud_properties:
+    instance_type: m3.xlarge
+    availability_zone: sa-east-1a # CHANGE IT!
 
 update:
   canaries: 1
-  canary_watch_time: 60000
-  update_watch_time: 60000
-  max_in_flight: 2
+  canary_watch_time: 30000
+  update_watch_time: 30000
+  max_in_flight: 1
+  max_errors: 1
 
 jobs:
+- name: bludit
+  templates:
   - name: bludit
-    templates:
-    - name: bludit
-    instances: 1
-    resource_pool: default
-    networks:
-    - name: default
-    properties: {}
+  instances: 1
+  resource_pool: infrastructure
+  networks:
+  - name: private
+    static_ips: [10.100.10.120] # CHANGE IT!
+    default: [dns, gateway]
+  - name: public
+    static_ips: [xxxxxxxxxxxxxx] # CHANGE IT!

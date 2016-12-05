@@ -2,31 +2,26 @@
 
 This is a release for [BOSH](http://bosh.io/) that deploys [Bludit](https://bludit.com), with Nginx and PHP-FPM.
 
-## How to deploy this release
-
-In this tutorial, I have Bosh-lite working on my computer, and my BOSH director has the IP 192.168.50.4.
-
-### 1. Clone this repository
+## 1. Clone this repository
 
 ```
-$ git clone git@github.com:dignajar/bludit-bosh-release.git
+$ git clone https://github.com/dignajar/bludit-bosh-release.git
 $ cd bludit-bosh-release
 ```
 
-### 2. Build the release
+## 2. Build the release
 
 ```
 $ bosh create release --force
 ```
 
-### 3. Upload the release to BOSH director
+## 3. Upload the release to BOSH director
 
 ```
 $ bosh upload release
 ```
 
-Check if the release is uploaded.
-
+Check the list of releases
 ```
 $ bosh releases
 
@@ -37,25 +32,34 @@ $ bosh releases
 +----------------+------------+-------------+
 ```
 
+## 4. Stemcells
 
-### 4. Deployment manifest
+Upload the stemcell to BOSH.
+```
+bosh upload stemcell https://s3.amazonaws.com/bosh-aws-light-stemcells/light-bosh-stemcell-3312.6-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
+```
 
-The file `manifest.yml` has a lot of properties about the infrastructure.
-
-This manifest uses the stemcell `bosh-warden-boshlite-ubuntu-trusty-go_agent`, check if you have this stemcell on your BOSH.
-
+Check the list of stemcells
 ```
 $ bosh stemcells
 
-+---------------------------------------------+---------------+---------+--------------------------------------+
-| Name                                        | OS            | Version | CID                                  |
-+---------------------------------------------+---------------+---------+--------------------------------------+
-| bosh-warden-boshlite-ubuntu-trusty-go_agent | ubuntu-trusty | 3262.2* | 68ab61b0-090a-42bf-635a-c146fa3434a1 |
-+---------------------------------------------+---------------+---------+--------------------------------------+
+Acting as user 'admin' on 'my-bosh'
+
++-----------------------------------------+---------------+---------+--------------------+
+| Name                                    | OS            | Version | CID                |
++-----------------------------------------+---------------+---------+--------------------+
+| bosh-aws-xen-hvm-ubuntu-trusty-go_agent | ubuntu-trusty | 3312.6  | ami-aa9e07c6 light |
++-----------------------------------------+---------------+---------+--------------------+
+
+(*) Currently in-use
+
+Stemcells total: 1
 ```
 
-Get the `uuid` of the BOSH director.
+## 5. Deployment manifest
+The file `manifest.yml` has a lot of properties about the infrastructure. This manifest is prepared for Amazon AWS, check the variables inside.
 
+Get the `uuid` of the BOSH director.
 ```
 $ bosh status --uuid
 
@@ -72,10 +76,22 @@ $ bosh deployment manifest.yml
 Deployment set to '.../bludit-bosh-release/manifest.yml'
 ```
 
-### Deploy
-
+Deploy Bludit
 ```
 $ bosh deploy
+```
+
+Check deployments
+```
+$ bosh deployments
+
++--------+----------------+------------------------------------------------+--------------+
+| Name   | Release(s)     | Stemcell(s)                                    | Cloud Config |
++--------+----------------+------------------------------------------------+--------------+
+| bludit | bludit/0+dev.1 | bosh-aws-xen-hvm-ubuntu-trusty-go_agent/3312.6 | none         |
++--------+----------------+------------------------------------------------+--------------+
+
+Deployments total: 1
 ```
 
 Check if the VM is up and running.
@@ -83,22 +99,20 @@ Check if the VM is up and running.
 ```
 $ bosh vms
 
-+-------------------------------------------------+---------+-----+---------+----------+
-| VM                                              | State   | AZ  | VM Type | IPs      |
-+-------------------------------------------------+---------+-----+---------+----------+
-| bludit/0 (78e4d24e-d9cb-4a6e-8bba-c35b5651037a) | running | n/a | default | 10.0.0.2 |
-+-------------------------------------------------+---------+-----+---------+----------+
++-------------------------------------------------+---------+-----+----------------+---------------+
+| VM                                              | State   | AZ  | VM Type        | IPs           |
++-------------------------------------------------+---------+-----+----------------+---------------+
+| bludit/0 (2a31bd26-998d-4772-a95a-6844bef819c8) | running | n/a | infrastructure | 10.100.10.120 |
+|                                                 |         |     |                | 52.67.56.58   |
++-------------------------------------------------+---------+-----+----------------+---------------+
+
+VMs total: 1
+
 ```
 
-Add the next static route, to get access to the VM on the Bosh director.
+## Finish Bludit installation
 
-```
-$ sudo ip route add 10.0.0.0/30 via 192.168.50.4
-```
-
-### Install Bludit
-
-Go with your browser to the URL `http://10.0.0.2` and finish the installation.
+Go with your browser to the URL `http://{ELASTIC-IP}` and finish the installation.
 
 ## Sources
 
