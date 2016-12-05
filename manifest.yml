@@ -1,6 +1,6 @@
 ---
 name: bludit
-director_uuid: 5a49a256-8569-4e9c-b83f-24bf6a4db843 # CHANGE IT!
+director_uuid: 5a49a256-8569-4e9c-b83f-24bf6a4db843 # BOSH DIRECTOR UUID - CHANGE IT!
 
 releases:
 - name: bludit
@@ -10,14 +10,14 @@ networks:
 - name: private
   type: manual
   subnets:
-  - range: 10.100.10.0/24 # CHANGE IT!
-    gateway: 10.100.10.1 # CHANGE IT!
-    dns: [10.100.10.2] # CHANGE IT!
+  - range: 10.100.10.0/24 # SUBNET RANGE - CHANGE IT!
+    gateway: 10.100.10.1 # GW OF SUBNET - CHANGE IT!
+    dns: [10.100.10.2] # DNS OF SUBNET - CHANGE IT!
     reserved: [10.100.10.1-10.100.10.3, 10.100.10.6] # AWS reserved IP finished in .1, .2, .3., Bosh director .6
     static: 10.100.10.100-10.100.10.150
     cloud_properties:
-      subnet: xxxxxxxxxxxxxx # CHANGE IT!
-      security_groups: [xxxxxxxxxxxxxx] # CHANGE IT!
+      subnet: xxxxxxxxxxxxxx # SUBNET ID - CHANGE IT!
+      security_groups: [xxxxxxxxxxxxxx] # SECURITY-GROUP - CHANGE IT!
 - name: public
   type: vip
 
@@ -29,14 +29,14 @@ resource_pools:
   network: private
   cloud_properties:
     instance_type: t2.micro
-    availability_zone: sa-east-1a # CHANGE IT!
+    availability_zone: sa-east-1a # AZ - CHANGE IT!
 
 compilation:
-  workers: 1
+  workers: 5
   network: private
   cloud_properties:
     instance_type: m3.xlarge
-    availability_zone: sa-east-1a # CHANGE IT!
+    availability_zone: sa-east-1a # AZ - CHANGE IT!
 
 update:
   canaries: 1
@@ -53,7 +53,7 @@ jobs:
   resource_pool: infrastructure
   networks:
   - name: private
-    static_ips: [10.100.10.120] # CHANGE IT!
+    static_ips: [10.100.10.120] # PRIVATE IP - CHANGE IT!
     default: [dns, gateway]
   - name: public
-    static_ips: [xxxxxxxxxxxxxx] # CHANGE IT!
+    static_ips: [xxxxxxxxxxxxxx] # ELASTIC IP - CHANGE IT!
